@@ -11,7 +11,7 @@ class User extends \CodeIgniter\Database\Migration{
             ],
             'username'=>[
                 'type'=>'VARCHAR',
-                'constraint'=>100
+                'constraint'=>100,
             ],
             'password'=>[
                 'type'=>'TEXT'

@@ -1,0 +1,28 @@
+/* .product__item__text {
+	padding-top: 25px;
+	position: relative;
+	display: flex !important;
+    justify-content: space-between;
+} */
+
+.product__item__text button {
+	font-size: 15px;
+	color: #e53637;
+	font-weight: 700;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+	visibility: hidden;
+	-webkit-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+}
+.product__item:hover .product__item__text button {
+	top: 22px;
+    padding: 0;
+    border: none;
+    background: none;
+	opacity: 1;
+	visibility: visible;
+}
