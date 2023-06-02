@@ -40,6 +40,10 @@
                                     <label for="inputEmail">Email</label>
                                 </div>
                                 <div class="form-floating mb-3">
+                                    <input class="form-control" id="inputKontak" type="tel" name="kontak" placeholder="" />
+                                    <label for="inputEmail">No Telepon</label>
+                                </div>
+                                <div class="form-floating mb-3">
                                     <input class="form-control" id="inputPassword" type="password" name="password" placeholder="" />
                                     <label for="inputPassword">Password</label>
                                 </div>

@@ -1,5 +1,5 @@
 <div class="card-header">
-    <h6 class="mt-3">Transaksi</h6>
+    <h6 class="mt-3"></h6>
 </div>
 <div class="card-body">
     <table class="table">
@@ -20,7 +20,7 @@
             <td><?= $transaksi->jumlah ?></td>
         </tr>
         <tr>
-            <td>Jumlah</td>
+            <td>Status</td>
             <td><?= $transaksi->status ?></td>
         </tr>
         <tr>

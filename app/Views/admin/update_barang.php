@@ -24,8 +24,9 @@
     $size = [
         'name' => 'size',
         'id' => 'size',
-        'value' => null,
+        'value' => $barang->size,
         'class' => 'form-control',
+        'readonly' => true
     ];
     $gambar = [
         'name' => 'gambar',
@@ -66,6 +67,10 @@
         <div class="form-group mb-3">
             <?= form_label("Stok","stok")?>
             <?= form_input($stok)?> 
+        </div>
+        <div class="form-group mb-3">
+            <?= form_label("Size","size")?>
+            <?= form_input($size)?> 
         </div>
         <div class="form-group mb-3">
             <?= form_label("Size","size")?>

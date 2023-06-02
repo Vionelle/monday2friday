@@ -22,7 +22,7 @@
         <p>
             Pembeli: <?= $pembeli->username ?><br>
             Alamat: <?= $transaksi->alamat ?><br>
-            No. Transaksi: <?= $transaksi->no ?><br>
+            No. Transaksi: <?= $transaksi->id ?><br>
             Tanggal: <?= date('Y-m-d', strtotime($transaksi->created_date)) ?>
         </p>
         <table cellpadding="3">
