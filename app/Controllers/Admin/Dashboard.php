@@ -54,7 +54,7 @@ class Dashboard extends BaseController
                 $this->barang->fill($data);
                 $this->barang->id = $id_barang;
                 $this->barang->gambar = $gambar;
-                $this->barang->created_by = $this->session->get('id');
+                // $this->barang->created_by = $this->session->get('id');
                 $this->barang->created_date = date("Y-m-d H:i:s");
                 // dd($this->barangModel->save($this->barang).value);
                 $this->barangModel->save($this->barang);
@@ -171,7 +171,7 @@ class Dashboard extends BaseController
                 if($this->request->getFile('gambar')->isValid()){
                     $this->barang->gambar = $this->request->getFile('gambar');
                 }
-                $this->barang->updated_by = $this->session->get('id');
+                // $this->barang->updated_by = $this->session->get('id');
                 $this->barang->updated_date = date("Y-m-d H:i:s");
 
                 $this->barangModel->save($this->barang);

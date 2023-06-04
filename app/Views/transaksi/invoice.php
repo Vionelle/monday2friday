@@ -12,6 +12,14 @@
         </style>    
     </head>
     <body>
+        <!-- <div class="row">
+            <div class="col-6">
+                <div style="font-size:48px; color:'#dddddd' "><i>Invoice</i></div>
+            </div>
+            <div class="col-6">
+                <img src="">
+            </div>
+        </div> -->
         <div style="font-size:48px; color:'#dddddd' "><i>Invoice</i></div>
         <p>
             <i>Monday to Friday Store<i><br>

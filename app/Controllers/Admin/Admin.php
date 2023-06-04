@@ -81,7 +81,7 @@ class Admin extends BaseController
             }
 
             $akun = [
-                'id' => $dataAdmin['id'],
+                'id' => $dataAdmin['id_admin'],
                 'username' => $dataAdmin['username'],
                 'nama_lengkap' => $dataAdmin['nama_lengkap'],
                 'email' => $dataAdmin['email']

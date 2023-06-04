@@ -40,26 +40,26 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__size">
                                             <form method="GET" action="<?php echo site_url('shop')?>">
-                                                <label for="xs">xxs
-                                                    <input type="submit" id="xs" name="size" value="xxs">
+                                                <label for="xxs">xxs
+                                                    <input type="submit" id="xxs" name="size" value="xxs">
                                                 </label>
-                                                <label for="sm">xs
-                                                    <input type="submit" id="sm" name="size" value="xs">
+                                                <label for="xs">xs
+                                                    <input type="submit" id="xs" name="size" value="xs">
                                                 </label>
-                                                <label for="md">s
-                                                    <input type="submit" id="md" name="size" value="s">
+                                                <label for="s">s
+                                                    <input type="submit" id="s" name="size" value="s">
                                                 </label>
-                                                <label for="xl">m
-                                                    <input type="submit" id="xl" name="size" value="m">
+                                                <label for="m">m
+                                                    <input type="submit" id="m" name="size" value="m">
                                                 </label>
-                                                <label for="2xl">l
-                                                    <input type="submit" id="2xl" name="size" value="l">
+                                                <label for="l">l
+                                                    <input type="submit" id="l" name="size" value="l">
                                                 </label>
-                                                <label for="xxl">xl
-                                                    <input type="submit" id="xxl" name="size" value="xl"> 
+                                                <label for="xl">xl
+                                                    <input type="submit" id="xl" name="size" value="xl"> 
                                                 </label>
-                                                <label for="3xl">xxl
-                                                    <input type="submit" id="3xl" name="size" value="xxl">
+                                                <label for="xxl">xxl
+                                                    <input type="submit" id="xxl" name="size" value="xxl">
                                                 </label>
                                             </form>
                                             </div>

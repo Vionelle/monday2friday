@@ -87,13 +87,14 @@ class Transaksi extends BaseController
         $pdf->writeHTML($html, true, false, true, false, '');
 
         //$this->response->setContentType('application/pdf');
+        $email_pembeli = $pembeli->email;
 
         $pdf->Output('C:/xampp/htdocs/monday2friday/uploads/invoice.pdf', 'F');
         $attachment = base_url('uploads/invoice.pdf');
         $message = "<h1>Invoice Pembelian</h1><p>Kepada ".$pembeli->username.
         " berikut Invoice atas pembelian Anda</p><br><h4><strong>TERIMA KASIH</strong></h4>";
 
-        $this->sendEmail($attachment, EMAIL_PENGIRIM, 'Invoice', $message);
+        $this->sendEmail($attachment, $email_pembeli, 'Invoice', $message);
 
         $this->session->setFlashdata('success',['Invoice Berhasil Dikirim']);
         return redirect()->to(site_url('admin/daftartransaksi'));

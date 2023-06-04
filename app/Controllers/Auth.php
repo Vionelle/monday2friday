@@ -10,8 +10,15 @@ class Auth extends BaseController
         $this->validation = \Config\Services::validation();
         $this->session = session();
         $this->email = \Config\Services::email();
+        $this->db      = \Config\Database::connect();
+        $this->builderUser = $this->db->table('user');
     }
     public function register(){
+        $this->builderUser->selectMax("id");
+        $id_tangkap = $this->builderUser->countAll();
+        $id_tangkap++;
+        $id_user = "PL" . $id_tangkap;
+
         if($this->request->getPost()){
             $data = $this->request->getPost();
             $validate = $this->validation->run($data,'register');
@@ -20,10 +27,11 @@ class Auth extends BaseController
             if(!$errors){
                 $userModel = new \App\Models\UserModel();
                 $user = new \App\Entities\User();
+                $user->id = $id_user;
                 $user->username = $this->request->getPost('username');
                 $user->password = $this->request->getPost('password');
                 $user->email = $this->request->getPost('email');
-                $user->created_by = 0;
+                // $user->created_by = 0;
                 $user->created_date = date("Y-m-d H:i:s");
                 $userModel->save($user);
 

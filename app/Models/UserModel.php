@@ -8,8 +8,9 @@ class UserModel extends Model
 {
     protected $table = 'user';
     protected $primarykey = 'id';
+    protected $useAutoIncrement = false;
     protected $allowedFields = [
-        'email','username','avatar','password','salt','created_by','created_date','updated_by','updated_date','token','kontak','alamat'
+        'id','email','username','password','salt','created_date','updated_date','token','kontak','alamat'
     ];
     protected $returnType = 'App\Entities\User';
     protected $useTimestamps = false;

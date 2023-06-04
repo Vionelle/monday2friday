@@ -6,7 +6,6 @@
         <thead>
             <th>Id</th>
             <th>Username</th>
-            <th>Created By</th>
             <th>Created Date</th>
         </thead>
         <tbody>
@@ -14,7 +13,6 @@
                 <tr>
                     <td><?= $user->id ?></td>
                     <td><?= $user->username ?></td>
-                    <td><?= $user->created_by ?></td>
                     <td><?= $user->created_date ?></td>
                 </tr>
             <?php endforeach ?>

@@ -86,7 +86,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                <label for="service">Pilih Service (JNE)</label>
+                <label for="service">Pilih Service (POS)</label>
                     <select class="form-control" id="service">
                         <option>Select Service</option>
                     </select>
@@ -164,7 +164,7 @@
                         'origin' : 153,
                         'destination' : id_city,
                         'weight' : 1000,
-                        'courier' : 'jne'
+                        'courier' : 'pos'
                     },
                     dataType : 'json',
                     success : function(data){
@@ -186,7 +186,7 @@
                 var estimasi = $('option:selected',this).attr('etd');
                 ongkir = parseInt($(this).val());
                 $("#ongkir").val(ongkir);
-                $("#estimasi").html(estimasi+" Hari");
+                $("#estimasi").html(estimasi);
                 var total_harga = (jumlah_pembelian*harga)+ongkir;
                 $("#total_harga").val(total_harga);
             });

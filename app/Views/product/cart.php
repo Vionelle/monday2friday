@@ -28,7 +28,7 @@
                         <?php }else{ 
                                 foreach($cart->contents() as $key => $value) { ?> 
                                     <tr>
-                                        <td><input type="number" min="1" name="qty" class="form-control" value="<?= $value["qty"] ?>"></td>
+                                        <td><?= $value['qty'] ?></td>
                                         <td><?= $value['name'] ?></td>
                                         <td><img class="img-fluid" style="max-height:200px"
                                         src="<?= base_url('uploads/'.$value['options']['gambar']) ?>"></td>
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="row">
-            <button type="submit" class="btn btn-primary mb-3 mr-3">Update</button>
+            <!-- <button type="submit" class="btn btn-primary mb-3 mr-3">Update</button> -->
             <button type="submit" class="btn btn-success float-end mb-3" style="float:right">Check Out</button>
         </div>
     </div>

@@ -10,7 +10,7 @@ class BarangModel extends Model
     protected $primarykey = 'id';
     protected $useAutoIncrement = false;
     protected $allowedFields = [
-        'id','nama','harga','stok','gambar','created_by','created_date','updated_by','updated_date','size'
+        'id','nama','harga','stok','gambar','size','created_date','updated_date'
     ];
     protected $returnType = 'App\Entities\Barang';
     protected $useTimestamps = false;

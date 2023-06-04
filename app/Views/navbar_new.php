@@ -15,11 +15,11 @@
                         <ul>
                             <li><a href="<?= site_url('home')?>">Home</a></li>
                             <li><a href="<?= site_url('shop')?>">Shop</a></li>
-                            <li><a href="#">Pages</a>
+                            <li><a href="#">Halaman</a>
                                 <ul class="dropdown">
-                                    <li><a href="<?= site_url('about')?>">About Us</a></li>
-                                    <li><a href="<?= site_url('shop/keranjang')?>">Shopping Cart</a></li>
-                                    <li><a href="#">Check Out</a></li>
+                                    <li><a href="<?= site_url('about')?>">Tentang Kami</a></li>
+                                    <li><a href="<?= site_url('shop/keranjang')?>">Keranjang</a></li>
+                                    <li><a href="#">Transaksi Saya</a></li>
                                 </ul>
                             </li>
                             <?php if($session->get('isLoggedin')):?>

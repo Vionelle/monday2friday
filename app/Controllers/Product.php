@@ -129,7 +129,7 @@ class Product extends BaseController
                 $transaksi->id = $id_transaksi;
                 $transaksi->status = "BELUM BAYAR";
                 // $transaksi->alamat = $alamat;
-                $transaksi->created_by = $this->session->get('id');
+                // $transaksi->created_by = $this->session->get('id');
                 $transaksi->created_date = date("Y-m-d H:i:s");
                 
                 // dd($transaksi);
