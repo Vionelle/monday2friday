@@ -59,6 +59,7 @@ class Transaksi extends BaseController
         // $transaksi = $this->transaksiModel->select('id_transaksi')->where('id_transaksi',$id);
 
         // $userModel = new \App\Models\UserModel();
+        // dd($transaksi);
         $pembeli = $this->userModel->find($transaksi->id_pembeli);
         // $pembeli = $this->transaksiModel->select('id_pembeli')->where('id_transaksi',$id);
         

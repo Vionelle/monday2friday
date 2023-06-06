@@ -29,6 +29,6 @@
         </tr>
     </table>
     <div style="float:right">
-        <a href="<?= site_url('admin/invoice/'.$transaksi->id) ?>" class="btn btn-success">Kirim Invoice</a>
+       
     </div>
 </div>

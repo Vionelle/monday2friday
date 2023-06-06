@@ -56,7 +56,7 @@
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th style="width:50%">Subtotal:</th>
+                            <th style="width:50%">Total Harga:</th>
                             <td><?= "Rp. ".number_format($cart->total(),2,',','.') ?></td>
                         </tr>
                         <!-- <tr>

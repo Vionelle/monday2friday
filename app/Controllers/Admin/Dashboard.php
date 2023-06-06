@@ -32,7 +32,7 @@ class Dashboard extends BaseController
         $this->builderBarang->selectMax("id");
         $id_tangkap = $this->builderBarang->countAll();
         $id_tangkap++;
-        $id_barang = "BR" . $id_tangkap;
+        $id_barang = "BRG" . $id_tangkap;
         // dd($id_barang);
 
         if($this->request->getPost()){

@@ -17,7 +17,7 @@ class Auth extends BaseController
         $this->builderUser->selectMax("id");
         $id_tangkap = $this->builderUser->countAll();
         $id_tangkap++;
-        $id_user = "PL" . $id_tangkap;
+        $id_user = "PBL" . $id_tangkap;
 
         if($this->request->getPost()){
             $data = $this->request->getPost();

@@ -108,7 +108,7 @@ class Product extends BaseController
                 $this->builderTransaksi->selectMax("id_transaksi");
                 $id_tangkap = $this->builderTransaksi->countAll();
                 $id_tangkap++;
-                $id_transaksi = "TR" . $id_tangkap;
+                $id_transaksi = "TRK" . $id_tangkap;
                 // dd($id_transaksi);
                 
                 $transaksiModel = new \App\Models\TransaksiModel();
