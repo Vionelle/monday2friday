@@ -76,6 +76,7 @@ $routes->group('admin', ['filter' => 'admin'], function($routes){
     $routes->add('daftartransaksi','Admin\Transaksi::daftarTransaksi');
     $routes->add('viewtransaksi/(:any)','Admin\Transaksi::viewTransaksi/$id_transaksi');
     $routes->add('invoice/(:any)','Admin\Transaksi::invoice/$id_transaksi');
+    $routes->add('laporan','Admin\Transaksi::laporan');
 });
 
 /*

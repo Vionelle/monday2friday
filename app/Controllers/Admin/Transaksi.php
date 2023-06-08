@@ -51,6 +51,18 @@ class Transaksi extends BaseController
         echo view('admin/template_footer',$data); 
     }
 
+    public function laporan(){
+        $data=[];
+        $data['judul'] = "Laporan Transaksi";
+
+        // $transaksiModel = new \App\Models\TransaksiModel();
+        $model = $this->transaksiModel->findAll();
+
+        echo view('admin/template_header',$data);
+        echo view('admin/laporan_transaksi',['model' => $model]);
+        echo view('admin/template_footer',$data);
+    }
+
     public function invoice(){
         $id_transaksi = $this->request->uri->getSegment(3);
 
