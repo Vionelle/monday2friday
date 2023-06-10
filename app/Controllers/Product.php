@@ -151,17 +151,17 @@ class Product extends BaseController
         ]);
     }
 
-    // public function transaksi(){
-    //     $id_transaksi = $this->request->uri->getSegment(3);
+    public function transaksi(){
+        $id_transaksi = $this->request->uri->getSegment(3);
 
-    //     $transaksiModel = new \App\Models\TransaksiModel();
-    //     $transaksi = $transaksiModel->find($id_transaksi);
+        $transaksiModel = new \App\Models\TransaksiModel();
+        $transaksi = $transaksiModel->find($id_transaksi);
         
-    //     return view('transaksi/view',[
-    //         'transaksi' => $transaksi,
-    //         'cart' => $cart = \Config\Services::cart(),            
-    //     ]);
-    // }
+        return view('transaksi/view',[
+            'transaksi' => $transaksi,
+            'cart' => $cart = \Config\Services::cart(),            
+        ]);
+    }
 
     public function getCity(){
         if($this->request->isAJAX()){

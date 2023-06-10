@@ -41,6 +41,12 @@ $routes->add('reset_password', 'Auth::resetPassword');
 $routes->add('register', 'Auth::register');    
 $routes->add('logout', 'Auth::logout');
 
+//nath
+$routes->add('transaksi/bayar/(:any)', 'Admin\Transaksi::bayar');
+$routes->post('transaksi/submitBayar/(:segment)', 'Admin\Transaksi::submitBayar/$1');
+$routes->add('transaksi/user', 'Admin\Transaksi::user');
+$routes->add('emailValidation/(:segment)', 'Auth::emailValidation/$1');
+
 $routes->group('shop', ['filter' => 'auth'], function($routes){
     $routes->add('keranjang', 'Product::viewCart');
     $routes->add('tambah', 'Product::tambah');

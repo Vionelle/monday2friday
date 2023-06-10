@@ -31,13 +31,30 @@ class Auth extends BaseController
                 $user->username = $this->request->getPost('username');
                 $user->password = $this->request->getPost('password');
                 $user->email = $this->request->getPost('email');
+                $user->active = 0;
                 // $user->created_by = 0;
                 $user->created_date = date("Y-m-d H:i:s");
                 $userModel->save($user);
 
-                $success = "Akun berhasil dibuat, silahkan login";
-                session()->setFlashdata('success',$success);
-                return redirect()->to('login');
+                //EMAIL INVOICE
+                $this->email->setFrom('jackquiledarrent@gmail.com', 'Monday to Friday');
+                //EMAIL INVOICE manual
+                $this->email->setTo($data['email']);
+
+                $this->email->SetSubject('Konfirmasi akun email');
+
+                $this->email->setMessage('Silahkan klik link berikut untuk mengaktivasi akun anda. http://localhost/monday2friday/emailValidation/' . $data['username'] . ''); // Our message above including the link
+
+                if (!$this->email->send()) {
+                    return redirect()->to('register');
+                } else {
+                    session()->setFlashdata('login', 'Anda berhasil mendaftar, silahkan aktivasi akun terlebih dahulu');
+                    return redirect()->to('login');
+                }
+
+                // $success = "Akun berhasil dibuat, silahkan login";
+                // session()->setFlashdata('success',$success);
+                // return redirect()->to('login');
 
             }else{
                 session()->setFlashdata('errors', $errors);
@@ -45,6 +62,22 @@ class Auth extends BaseController
             }
         }
         return view('register');
+    }
+    public function emailValidation($username)
+    {
+        //menampilkan halaman register
+        $userModel = new \App\Models\UserModel();
+
+        $user = $userModel->getUsernameDetail($username);
+
+        $userModel->save([
+            // $user->id ;
+            'id' => $user->id,
+            // 'id' => $user['id'],
+            'active' => '1',
+        ]);
+
+        return redirect()->to('/login');
     }
 
     public function login(){
@@ -110,7 +143,11 @@ class Auth extends BaseController
                     session()->setFlashdata('errors', ['Password Yang Anda Masukkan Salah']);
                     return redirect()->to('login');
 
-                }else{
+                } else if($user->active != 1){
+                    session()->setFlashdata('errors', ['Anda belum mengaktivasi akun ini, silahkan cek email anda']);
+                    return redirect()->to('login');
+                }
+                else{
                     $sessData = [
                         'username' => $user->username,
                         'id' => $user->id,

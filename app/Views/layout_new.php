@@ -44,6 +44,38 @@
     <script src="<?= base_url('template/malefashion-master/js/mixitup.min.js')?>"></script>
     <script src="<?= base_url('template/malefashion-master/js/owl.carousel.min.js')?>"></script>
     <script src="<?= base_url('template/malefashion-master/js/main.js')?>"></script>
+    <script>
+        function previewImg() {
+            const gambar = document.querySelector('#gambar');
+            const gambarLabel = document.querySelector('.custom-file-label');
+            const imgPreview = document.querySelector('.img-preview');
+
+            gambarLabel.textContent = gambar.files[0].name;
+
+            const fileBuktiBayar = new FileReader();
+            fileGambar.readAsDataURL(gambar.files[0]);
+
+            fileGambar.onload = function(e) {
+                imgPreview.src = e.target.result;
+            }
+        }
+
+        function previewImgBayar() {
+            const gambarBuktiBayar = document.querySelector('#bukti_bayar');
+            const gambarLabelBayar = document.querySelector('.custom-file-label');
+            const imgPreview = document.querySelector('.img-preview');
+
+            gambarLabelBayar.textContent = gambarBuktiBayar.files[0].name;
+
+            const fileBuktiBayar = new FileReader();
+
+            fileBuktiBayar.readAsDataURL(gambarBuktiBayar.files[0]);
+
+            fileBuktiBayar.onload = function(e) {
+                imgPreview.src = e.target.result;
+            }
+        }
+    </script>
     <?= $this->renderSection('script')?>
 </body>
 

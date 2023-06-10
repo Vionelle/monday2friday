@@ -126,5 +126,122 @@ class Transaksi extends BaseController
             return true;
         }
     }
+
+    public function bayar()
+    {
+        // if (!$this->session->has('isLogin')) {
+        //     return redirect()->to('/login');
+        // }
+        $id_transaksi = $this->request->uri->getSegment(3);
+        $transaksiModel = new \App\Models\TransaksiModel();
+
+        $model = $transaksiModel->join('user', 'user.id=transaksi.id_pembeli')
+            ->join('barang', 'barang.id=transaksi.id_barang')
+            ->where('transaksi.id', $id_transaksi)
+            ->first();
+
+            // dd($model);
+
+        // $productsModel = new \App\Models\ProductsModel();
+        // $barang = $this->barangModel->getProducts();
+
+        $data = [
+            'title' => 'Bayar Pesanan | Monday to Friday',
+            // 'statusNav' => 'order',
+            'validation' => \Config\Services::validation(),
+            'model' => $model,
+            // 'barang' => $barang,
+            'transaksi' => $this->transaksiModel->getTransaction($id_transaksi),
+            'cart' => $cart = \Config\Services::cart()
+        ];
+        return view('transaksi/bayar', $data);
+    }
+
+    public function submitBayar()
+    {
+        $id_transaksi = $this->request->uri->getSegment(3);
+        // if (!$this->session->has('isLogin')) {
+        //     return redirect()->to('/login');
+        // }
+
+        
+        
+        $transaksiModel = new \App\Models\TransaksiModel();
+
+        if (!$this->validate([
+            'nama_bank' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} product harus diisi,',
+                ]
+            ],
+            'atas_nama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} product harus diisi,',
+                ]
+            ],
+            'bukti_bayar' => [
+                'rules' => 'max_size[bukti_bayar,1024]|is_image[bukti_bayar]|mime_in[bukti_bayar,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size' => 'Ukuran gambar terlalu besar',
+                    'is_image' => 'Yang anda pilih bukan gambar',
+                    'mime_in' => 'Yang anda pilih bukan gambar'
+                ]
+            ]
+        ])) {
+            return redirect()->to('/transaksi/bayar/' . $id_transaksi)->withInput();
+        }
+
+        $fileBuktiBayar = $this->request->getFile('bukti_bayar');
+        //Cek apakah tidak ada gambar yang diupload
+        if ($fileBuktiBayar->getError() == 4) {
+            $namaGambar = 'default.png';
+        } else {
+            //Generate nama gambar random
+            $namaGambar = $fileBuktiBayar->getRandomName();
+            //pindahkan file ke folder img
+            $fileBuktiBayar->move('img', $namaGambar);
+        }
+
+        // dd($namaGambar);
+
+        $transaksiModel->save([
+            'id' => $id_transaksi,
+            'bukti_bayar' => $namaGambar,
+            'metode_pembayaran' => $this->request->getVar('nama_bank'),
+            // 'atas_nama' => $this->request->getVar('atas_nama'),
+            'status' => 'MENUNGGU KONFIRMASI PEMBAYARAN'
+        ]);
+
+        session()->setFlashdata('pesan', 'Kamu berhasil membayar, silahkan tunggu konfirmasi dari kami');
+
+        return redirect()->to('/transaksi/user');
+    }
+
+    public function user()
+    {
+        // if (!$this->session->has('isLogin')) {
+        //     return redirect()->to('/login');
+        // }
+
+        $id = $this->session->get('id');
+        $transaksiModel = new \App\Models\TransaksiModel();
+
+        $model = $transaksiModel->join('user', 'user.id=transaksi.id_pembeli')
+            ->join('barang', 'barang.id=transaksi.id_barang')
+            ->where('transaksi.id_pembeli', $id)
+            ->where('transaksi.status!=', 'Produk sampai di tujuan')
+            ->paginate(10);
+
+        return view('transaksi/user', [
+            'model' => $model,
+            'pager' => $transaksiModel->pager,
+            'username' => $this->session->get('username'),
+            'title' => 'List Transaksi | Bunch of Gifts',
+            'statusNav' => 'order',
+            'cart' => $cart = \Config\Services::cart()
+        ]);
+    }
 }
 ?>

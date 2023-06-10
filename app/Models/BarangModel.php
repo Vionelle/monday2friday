@@ -18,4 +18,13 @@ class BarangModel extends Model
     // public function search($search){
     //     return $this->table('barang')->like('nama',$search);
     // }
+
+    public function getProducts($slug = false)
+    {
+        if ($slug == false) {
+            return $this->findAll();
+        }
+
+        return $this->where(['slug' => $slug])->first();
+    }
 }

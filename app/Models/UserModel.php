@@ -10,7 +10,7 @@ class UserModel extends Model
     protected $primarykey = 'id';
     protected $useAutoIncrement = false;
     protected $allowedFields = [
-        'id','email','username','password','salt','created_date','updated_date','token','kontak','alamat'
+        'id','email','username','password','salt','created_date','updated_date','token','kontak','alamat', 'role', 'active'
     ];
     protected $returnType = 'App\Entities\User';
     protected $useTimestamps = false;
@@ -32,6 +32,11 @@ class UserModel extends Model
                         ->set($data)
                         ->update();
         
+    }
+
+    public function getUsernameDetail($username)
+    {
+        return $this->where('username', $username)->first();
     }
 }
 
