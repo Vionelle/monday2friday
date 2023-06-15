@@ -109,7 +109,7 @@
                             <div class="col-4">
                                 <form method="POST" action="<?php echo site_url('shop/tambah')?>">
                                 <?php 
-                                    echo form_hidden('id', $m->id);
+                                    echo form_hidden('id', $m->id_barang);
                                     echo form_hidden('price', $m->harga);
                                     echo form_hidden('name', $m->nama);
                                     echo form_hidden('size', $m->size);
@@ -118,7 +118,7 @@
                                     <div class="product__item sale">
                                         <div class="product__item__pic set-bg" data-setbg="<?= base_url('uploads/'.$m->gambar) ?>">
                                         
-                                            <a href="<?= site_url('shop/beli/'.$m->id)?>"><span class="label">Beli sekarang</span></a>
+                                            <a href="<?= site_url('shop/beli/'.$m->id_barang)?>"><span class="label">Beli sekarang</span></a>
                                         
                                         </div>
                                         <div class="product__item__text">

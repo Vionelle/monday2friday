@@ -19,8 +19,8 @@
                                 <ul class="dropdown">
                                     <li><a href="<?= site_url('about')?>">Tentang Kami</a></li>
                                     <li><a href="<?= site_url('shop/keranjang')?>">Keranjang</a></li>
-                                    <li><a href="#">Transaksi Saya</a></li>
-                                    <li><a href="#">Profil Saya</a></li>
+                                    <li><a href="<?= site_url('transaksi/user')?>">Transaksi Saya</a></li>
+                                    <li><a href="<?= site_url('/user')?>">Profil Saya</a></li>
                                 </ul>
                             </li>
                             <?php if($session->get('isLoggedin')):?>

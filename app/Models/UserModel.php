@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class UserModel extends Model
 {
     protected $table = 'user';
-    protected $primarykey = 'id';
+    protected $primaryKey = 'id';
     protected $useAutoIncrement = false;
     protected $allowedFields = [
         'id','email','username','password','salt','created_date','updated_date','token','kontak','alamat', 'role', 'active'
@@ -37,6 +37,10 @@ class UserModel extends Model
     public function getUsernameDetail($username)
     {
         return $this->where('username', $username)->first();
+    }
+    public function getUserDetail($id)
+    {
+        return $this->where('id', $id)->first();
     }
 }
 

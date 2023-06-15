@@ -4,7 +4,7 @@
         $id_barang = [
             'name' => 'id_barang',
             'id' => 'id_barang',
-            'value' => $model->id,
+            'value' => $model->id_barang,
             'type' =>  'hidden'
         ];
         $id_pembeli= [
@@ -86,7 +86,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                <label for="service">Pilih Service (POS)</label>
+                <label for="service">Pilih Service (JNE)</label>
                     <select class="form-control" id="service">
                         <option>Select Service</option>
                     </select>
@@ -164,7 +164,7 @@
                         'origin' : 153,
                         'destination' : id_city,
                         'weight' : 1000,
-                        'courier' : 'pos'
+                        'courier' : 'jne'
                     },
                     dataType : 'json',
                     success : function(data){

@@ -7,10 +7,10 @@ use CodeIgniter\Model;
 class TransaksiModel extends Model
 {
     protected $table = 'transaksi';
-    protected $primarykey = 'id';
+    protected $primaryKey = 'id_transaksi';
     protected $useAutoIncrement = false;
     protected $allowedFields = [
-        'id','id_barang','id_pembeli','jumlah','total_harga','kode_resi','alamat','ongkir','status', 'bukti_bayar', 'metode_pembayaran'
+        'id_transaksi','id_barang','id_pembeli','jumlah','total_harga','kode_resi','alamat','ongkir','status', 'bukti_bayar', 'metode_pembayaran'
         ,'created_date','updated_date'
     ];
     protected $returnType = 'App\Entities\Transaksi';
@@ -22,6 +22,6 @@ class TransaksiModel extends Model
             return $this->findAll();
         }
 
-        return $this->where(['id' => $id_transaksi])->first();
+        return $this->where(['id_transaksi' => $id_transaksi])->first();
     }
 }

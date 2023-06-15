@@ -18,6 +18,16 @@
         </p>
     </div>
     <?php endif ?>
+
+    <form method='get' action="<?= site_url('admin/laporan') ?>" id="searchForm">
+        <div class="form-rapih">
+            <input class="form-control" type='date' name='dari' value='<?= $dari ?>'>
+            <input class="form-control" type='date' name='ke' value='<?= $ke ?>'>
+            <input class="btn btn-success" type='button' id='btnsearch' value='Submit' onclick='document.getElementById("searchForm").submit();'>
+        </div>
+    </form>
+
+    
     <table class="table">
         <thead>
             <tr>
@@ -33,7 +43,7 @@
         <tbody>
             <?php foreach($model as $index=>$transaksi): ?>
                 <tr>
-                    <td><?= $transaksi->id ?></td>
+                    <td><?= $transaksi->id_transaksi ?></td>
                     <td><?= $transaksi->id_barang ?></td?>
                     <td><?= $transaksi->id_pembeli ?></td>
                     <td><?= $transaksi->alamat ?></td>

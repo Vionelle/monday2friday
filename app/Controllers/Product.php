@@ -121,12 +121,12 @@ class Product extends BaseController
                 $barang = $barangModel->find($id_barang);
 
                 $entBarang = new \App\Entities\Barang();
-                $entBarang->id = $id_barang;
+                $entBarang->id_barang = $id_barang;
                 $entBarang->stok = $barang->stok-$jumlah_pembelian;
                 $barangModel->save($entBarang);
 
                 $transaksi->fill($data);
-                $transaksi->id = $id_transaksi;
+                $transaksi->id_transaksi = $id_transaksi;
                 $transaksi->status = "BELUM BAYAR";
                 // $transaksi->alamat = $alamat;
                 // $transaksi->created_by = $this->session->get('id');

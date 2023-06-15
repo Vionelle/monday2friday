@@ -4,10 +4,10 @@
     <div class="row">
         <div class="form-bayar mt-4 col-8">
             <h2 class="my-3">Form Bayar Pesanan</h2>
-            <form action="/monday2friday/transaksi/submitBayar/<?= $transaksi->id; ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= site_url('transaksi/submitBayar/' . $transaksi->id_transaksi) ?>" method="post" enctype="multipart/form-data">
                 <!-- crsf agar form hanya dapat diakses di halaman ini -->
                 <?= csrf_field(); ?>
-                <input type="hidden" name="slug" id="" value="<?= $transaksi->id; ?>">
+                <input type="hidden" name="slug" id="" value="<?= $transaksi->id_transaksi; ?>">
 
                 <div class=" form-group row">
                     <label for="username" class="col-sm-2 col-form-label">Pembeli</label>

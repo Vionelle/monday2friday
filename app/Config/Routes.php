@@ -41,11 +41,22 @@ $routes->add('reset_password', 'Auth::resetPassword');
 $routes->add('register', 'Auth::register');    
 $routes->add('logout', 'Auth::logout');
 
-//nath
+//nath-bayar
 $routes->add('transaksi/bayar/(:any)', 'Admin\Transaksi::bayar');
+$routes->add('transaksi/batal/(:any)', 'Admin\Transaksi::batal');
 $routes->post('transaksi/submitBayar/(:segment)', 'Admin\Transaksi::submitBayar/$1');
 $routes->add('transaksi/user', 'Admin\Transaksi::user');
 $routes->add('emailValidation/(:segment)', 'Auth::emailValidation/$1');
+$routes->add('lacakResi/(:segment)', 'Admin\Transaksi::lacakResi');
+
+//nath-user
+$routes->get('/user', 'User::index');
+$routes->get('/user/edit', 'User::edit');
+$routes->post('/user/update/(:segment)', 'User::update/$1');
+
+//nath-admin
+// $routes->get('admin/cekPembayaran/(:segment)', 'Admin\Transaksi::cekPembayaran');
+// $routes->post('admin/prosesProduk/(:segment)', 'Admin\Transaksi::prosesProduk');
 
 $routes->group('shop', ['filter' => 'auth'], function($routes){
     $routes->add('keranjang', 'Product::viewCart');
@@ -81,6 +92,10 @@ $routes->group('admin', ['filter' => 'admin'], function($routes){
     $routes->add('daftaruser','Admin\Users::daftarUser');
     $routes->add('daftartransaksi','Admin\Transaksi::daftarTransaksi');
     $routes->add('viewtransaksi/(:any)','Admin\Transaksi::viewTransaksi/$id_transaksi');
+    $routes->add('cekPembayaran/(:segment)','Admin\Transaksi::cekPembayaran');
+    $routes->add('prosesProduk/(:segment)','Admin\Transaksi::prosesProduk');
+    $routes->add('simpanResi/(:segment)','Admin\Transaksi::simpanResi');
+    $routes->add('batal/(:segment)','Admin\Transaksi::batalAdmin');
     $routes->add('invoice/(:any)','Admin\Transaksi::invoice/$id_transaksi');
     $routes->add('laporan','Admin\Transaksi::laporan');
 });

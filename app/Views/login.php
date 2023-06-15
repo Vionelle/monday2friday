@@ -12,6 +12,7 @@
                             $session = session();
                             $errors = $session->getFlashdata('errors');
                             $success = $session->getFlashdata('success');
+                            $login = $session->getFlashdata('login');
                             if ($errors != null){?>
                                 <div class="alert alert-warning">
                                     <ul>
@@ -23,6 +24,7 @@
                                     </ul>
                                 </div><?php
                             }
+                            
                             if ($success != null){?>
                             <div class="alert alert-success">
                                 <?php echo $success ?>
@@ -30,6 +32,11 @@
                             <?php    
                             }
                             ?>
+                            <?php if (session()->getFlashdata('login')) : ?>
+                                <div class="alert alert-success" role="alert">
+                                    <?= session()->getFlashdata('login'); ?>
+                                </div>
+                            <?php endif; ?>
                             <form method="POST" action="<?php echo site_url('login')?>">
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="inputUsername" type="text" placeholder="Username" name="username" value="<?php if($session->getFlashdata('username')) echo $session->getFlashdata('username') ?>" />

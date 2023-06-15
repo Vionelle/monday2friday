@@ -1,0 +1,13 @@
+form .label-akhir{
+	margin-bottom: 10px;
+}
+
+/* ADMIN-LAPORAN */
+.form-rapih{
+    display: flex;
+    /* justify-content: space-between; */
+}
+.form-rapih input{
+    max-width: 300px;
+    margin-right: 15px;
+}

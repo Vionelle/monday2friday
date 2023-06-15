@@ -16,6 +16,9 @@ class Dashboard extends BaseController
         $this->barang = new \App\Entities\Barang();
         $this->db      = \Config\Database::connect();
         $this->builderBarang = $this->db->table('barang');
+        $this->builder = $this->db->table('user');
+        $this->transaksiModel = new \App\Models\TransaksiModel();
+        $this->email = \Config\Services::email();
     }
 
     public function viewCreate(){
@@ -73,8 +76,53 @@ class Dashboard extends BaseController
         // if ($this->session->get('role') != 0) {
         //     return redirect()->to('admin/login');
         // }
-        $data=[];
-        $data['judul'] = "Dashboard";
+        // $data=[];
+        // $data['judul'] = "Dashboard";
+
+        $this->builder->select('user.id as userid, username, role, email, kontak');
+        $query = $this->builder->get();
+
+        //CHART
+        $db = \Config\Database::connect();
+        $builder = $db->table('transaksi');
+        $queryYear = $builder->select("COUNT(id_transaksi) as transaksi, YEAR(created_date) as year");
+        $queryYear = $builder->groupBy("YEAR(created_date)");
+        $queryYear = $builder->orderBy("YEAR(created_date)", "ASC")->get();
+        $record = $queryYear->getResult();
+        $years = [];
+        foreach ($record as $row) {
+            $years[] = array(
+                'year'   => $row->year,
+                'id_transaksi'   => $row->transaksi,
+            );
+        }
+
+        $queryMonth = $builder->select("COUNT(id_transaksi) as count, MONTHNAME(created_date) as month");
+        $queryMonth = $builder->where("YEAR(created_date)=YEAR(NOW()) AND MONTH(created_date) GROUP BY MONTHNAME(created_date) ORDER BY STR_TO_DATE(CONCAT( month), '%M')")->get();
+        $recordMonth = $queryMonth->getResult();
+        $months = [];
+        foreach ($recordMonth as $row) {
+            $months[] = array(
+                'month'   => $row->month,
+                'id_transaksi'   => $row->count,
+            );
+        }
+
+        $transaksiModel = new \App\Models\TransaksiModel();
+
+        $pie_snack = $transaksiModel->join('barang', 'barang.id_barang=transaksi.id_barang')
+            ->countAllResults();
+        $pie_rajutan = $transaksiModel->join('barang', 'barang.id_barang=transaksi.id_barang')
+            ->countAllResults();
+
+        $data = [
+            'judul' => "Dashboard",
+            'users' => $query->getResult(),
+            'years' => $years,
+            'months' => $months,
+            'pie_snack' => $pie_snack,
+            'pie_rajutan' => $pie_rajutan
+        ];
 
         echo view('admin/template_header',$data);
         echo view('admin/dashboard_admin',$data);

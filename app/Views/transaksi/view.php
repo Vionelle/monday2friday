@@ -18,7 +18,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><?= $transaksi->id; ?></td>
+                    <td><?= $transaksi->id_transaksi; ?></td>
                     <td><?= $transaksi->id_pembeli; ?></td>
                     <td><?= $transaksi->alamat; ?></td>
                     <td><?= $transaksi->jumlah; ?></td>
@@ -29,7 +29,7 @@
         </table>
 
         <div class="detail-transaksi">
-            <p>Id Transaksi : <b><?= $transaksi->id; ?></b></p>
+            <p>Id Transaksi : <b><?= $transaksi->id_transaksi; ?></b></p>
             <p>Barang : <b><?= $transaksi->id_pembeli; ?></b></p>
             <p>Alamat : <b><?= $transaksi->alamat; ?></b></p>
             <p>Jumlah : <b><?= $transaksi->jumlah; ?></b></p>
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="link-order">
-        <a href="<?= site_url('transaksi/bayar/' . $transaksi->id); ?>" class="btn btn-success">Bayar</a>
+        <a href="<?= site_url('transaksi/bayar/' . $transaksi->id_transaksi); ?>" class="btn btn-success">Bayar</a>
     </div>
 </div>
 <?= $this->endSection()?>
