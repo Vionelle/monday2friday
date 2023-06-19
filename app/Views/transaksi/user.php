@@ -14,7 +14,16 @@
                 <?= session()->getFlashdata('gagal'); ?>
             </div>
         <?php endif; ?>
-
+        <?php if (session()->getFlashdata('batal')) : ?>
+            <div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <?= session()->getFlashdata('batal'); ?>
+            </div>
+        <?php endif; ?>
+        <?php if (session()->getFlashdata('success')) : ?>
+            <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <?= session()->getFlashdata('success'); ?>
+            </div>
+        <?php endif; ?>
         <table class="table">
             <thead>
                 <tr>
@@ -54,15 +63,11 @@
                             <?php if ($transaksi->status == 'MENUNGGU KONFIRMASI PEMBAYARAN') { ?>
                                 <a href="<?= site_url('transaksi/invoice/' . $transaksi->id_transaksi); ?>" class="btn btn-info">Invoice</a>
                             <?php } ?>
-                            <?php if ($transaksi->status == 'DIKIRIM') { ?>
-                                <a href="<?= site_url('lacakResi/' . $transaksi->id_transaksi); ?>" class="btn btn-success">Lacak Resi</a>
-                            <?php } ?>
                             <?php if ($transaksi->status == 'BUKTI PEMBAYARAN SALAH') { ?>
                                 <a href="<?= site_url('transaksi/bayar/' . $transaksi->id_transaksi); ?>" class="btn btn-primary">Bayar</a>
                                 <a href="<?= site_url('transaksi/invoice/' . $transaksi->id_transaksi); ?>" class="btn btn-info">Invoice</a>
                             <?php } ?>
-
-                            <?php if ($transaksi->status == 'PRODUK SEDANG DIANTAR') { ?>
+                            <?php if ($transaksi->status == 'BARANG SEDANG DIANTAR') { ?>
                                 <a href="<?= site_url('transaksi/lacakResi/' . $transaksi->id_transaksi); ?>" class="btn btn-info">Lacak Resi</a>
                                 <a href="<?= site_url('transaksi/selesai/' . $transaksi->id_transaksi); ?>" class="btn btn-primary">Pesanan Sampai</a>
                             <?php } ?>
@@ -71,8 +76,8 @@
                 <?php endforeach ?>
             </tbody>
         </table>
-        <div style='margin-top: 10px;'>
-            <?= $pager->links() ?>
+        <div class="mb-3" style='margin-top: 10px;'>
+            <?= $pager->links('default','custom_pagination') ?>
         </div>
     </div>
 </div>

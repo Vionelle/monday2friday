@@ -31,46 +31,62 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+//PAGES
 $routes->add('home', 'Home::index');
 $routes->add('shop', 'Product::index');
 $routes->add('about', 'About::index');
 
+//Autentikasi,Login,Register
 $routes->add('login', 'Auth::login');
 $routes->add('lupa_password', 'Auth::forgotPassword');
 $routes->add('reset_password', 'Auth::resetPassword');
 $routes->add('register', 'Auth::register');    
 $routes->add('logout', 'Auth::logout');
-
-//nath-bayar
-$routes->add('transaksi/bayar/(:any)', 'Admin\Transaksi::bayar');
-$routes->add('transaksi/batal/(:any)', 'Admin\Transaksi::batal');
-$routes->post('transaksi/submitBayar/(:segment)', 'Admin\Transaksi::submitBayar/$1');
-$routes->add('transaksi/user', 'Admin\Transaksi::user');
 $routes->add('emailValidation/(:segment)', 'Auth::emailValidation/$1');
-$routes->add('lacakResi/(:segment)', 'Admin\Transaksi::lacakResi');
 
-//nath-user
-$routes->get('/user', 'User::index');
-$routes->get('/user/edit', 'User::edit');
-$routes->post('/user/update/(:segment)', 'User::update/$1');
+//TRANSAKSI
+$routes->group('transaksi', ['filter' => 'auth'], function($routes){
+    $routes->add('bayar/(:any)', 'Admin\Transaksi::bayar');
+    $routes->add('batal/(:any)', 'Admin\Transaksi::batal');
+    $routes->post('submitBayar/(:segment)', 'Admin\Transaksi::submitBayar/$1');
+    $routes->post('submitCheckout', 'Admin\Transaksi::submitCheckout');
+    $routes->add('user', 'Admin\Transaksi::user');
+    $routes->add('invoice/(:segment)', 'Admin\Transaksi::invoice/$id_transaksi');
+    $routes->add('selesai/(:segment)', 'Admin\Transaksi::selesai/$id_transaksi');
+    
+    //LACAK RESI
+    $routes->add('lacakResi/(:segment)', 'Admin\Transaksi::lacakResi');
+});
 
-//nath-admin
+//PROFIL
+$routes->group('profil', ['filter' => 'auth'], function($routes){
+    $routes->get('user', 'User::index');
+    $routes->get('edit', 'User::edit');
+    $routes->post('update/(:segment)', 'User::update/$1');
+});
+
 // $routes->get('admin/cekPembayaran/(:segment)', 'Admin\Transaksi::cekPembayaran');
 // $routes->post('admin/prosesProduk/(:segment)', 'Admin\Transaksi::prosesProduk');
 
+/** CHECKING */
+$routes->add('shop/cek', 'Product::cek');
+
+//SHOP
 $routes->group('shop', ['filter' => 'auth'], function($routes){
     $routes->add('keranjang', 'Product::viewCart');
     $routes->add('tambah', 'Product::tambah');
+    $routes->add('delete/(:segment)', 'Product::delete');
     $routes->add('beli/(:any)', 'Product::buy');
     $routes->add('beli', 'Product::buy');
     $routes->add('provinsi', 'Product::getCity');
     $routes->add('biaya', 'Product::getCost');
-    $routes->add('cek', 'Product::cek');
+    $routes->add('checkout', 'Product::checkout');
     $routes->add('transaksi/(:any)', 'Product::transaksi/$id');
 });
 
 $routes->add('admin/logout', 'Admin\Admin::adminLogout');
 
+//ADMINISTRATOR
 $routes->group('admin', ['filter' => 'noadmin'], function($routes){
     $routes->add('','Admin\Admin::adminLogin');
     $routes->add('login','Admin\Admin::adminLogin');

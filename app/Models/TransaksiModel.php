@@ -10,7 +10,7 @@ class TransaksiModel extends Model
     protected $primaryKey = 'id_transaksi';
     protected $useAutoIncrement = false;
     protected $allowedFields = [
-        'id_transaksi','id_barang','id_pembeli','jumlah','total_harga','kode_resi','alamat','ongkir','status', 'bukti_bayar', 'metode_pembayaran'
+        'id_transaksi','id_barang','id_pembeli','jumlah','total_harga','kode_resi','alamat','ongkir','status', 'bukti_bayar', 'metode_pembayaran', 'atas_nama'
         ,'created_date','updated_date'
     ];
     protected $returnType = 'App\Entities\Transaksi';

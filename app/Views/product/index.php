@@ -115,6 +115,7 @@
                                     echo form_hidden('size', $m->size);
                                     echo form_hidden('gambar', $m->gambar);
                                 ?>
+                                <?php if($m->stok > 0): ?>
                                     <div class="product__item sale">
                                         <div class="product__item__pic set-bg" data-setbg="<?= base_url('uploads/'.$m->gambar) ?>">
                                         
@@ -131,6 +132,22 @@
                                             </div>
                                         </div>
                                     </div>
+                                <?php else: ?>
+                                    <div class="product__item sale">
+                                        <div class="product__item__pic set-bg" data-setbg="<?= base_url('mtf/sold_out2.png') ?>">
+                                                                               
+                                        </div>
+                                        <div class="product__item__text">
+                                            <div class="product__content">
+                                                <h6><?= $m->nama?></h6>
+                                                
+                                                <button type="button" class="add-cart" >Sold Out</button>
+                                                
+                                                <h5><?= "Rp. ".number_format($m->harga,2,',','.') ?></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
                                 </form>
                             </div>
                         <?php endforeach ?>

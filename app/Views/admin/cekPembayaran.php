@@ -36,7 +36,7 @@
                 <div class=" form-group row">
                     <label for="atas_nama" class="col-sm-3 col-form-label">Atas Nama</label>
                     <div class="col-sm-10">
-                        <input readonly type="text" class="form-control" id="atas_nama" name="atas_nama" value="<?= (old('atas_nama')) ? old('atas_nama') : $model->id_pembeli ?>">
+                        <input readonly type="text" class="form-control" id="atas_nama" name="atas_nama" value="<?= (old('atas_nama')) ? old('atas_nama') : $model->atas_nama ?>">
                     </div>
                 </div>
                 <div class="label-akhir form-group row">

@@ -46,9 +46,9 @@
                     <td><?=$barang->stok ?></td>
                     <td><?=$barang->size ?></td>
                     <td>
-                        <a href="<?= site_url('admin/viewbarang/'.$barang->id)?>" class="btn btn-primary">View</a>
-                        <a href="<?= site_url('admin/updatebarang/'.$barang->id)?>" class="btn btn-success">Update</a>
-                        <a href="<?= site_url('admin/deletebarang/'.$barang->id)?>" class="btn btn-danger">Delete</a>
+                        <a href="<?= site_url('admin/viewbarang/'.$barang->id_barang)?>" class="btn btn-primary">View</a>
+                        <a href="<?= site_url('admin/updatebarang/'.$barang->id_barang)?>" class="btn btn-success">Update</a>
+                        <a href="<?= site_url('admin/deletebarang/'.$barang->id_barang)?>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             <?php endforeach ?>

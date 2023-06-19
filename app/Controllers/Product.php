@@ -73,6 +73,14 @@ class Product extends BaseController
 
     }
 
+    public function delete(){
+        $id = $this->request->uri->getSegment(3);
+
+        $cart = \Config\Services::cart();
+        $cart->remove($id);
+        return redirect()->to(base_url('shop/keranjang'));
+    }
+
     public function viewCart(){
         $barang = new \App\Models\BarangModel();
         $model = $barang->findAll();
@@ -88,11 +96,96 @@ class Product extends BaseController
         $cart->destroy();
     }
 
+    public function checkout(){
+        $cart = \Config\Services::cart();
+
+        $provinsi = $this->rajaongkir('province');
+        
+        /** CEK JUMLAH ISI KERANJANG */
+        // $len = count($cart->contents());
+        // dd($len);
+
+        if($this->request->getPost()){
+            $data = $this->request->getPost();
+            // dd($data);
+            $this->validation->run($data,'checkout');
+            $errors = $this->validation->getErrors();
+            $keranjang = $cart->contents();
+
+            foreach($keranjang as $items){
+                if(!$errors){
+                    // dd($items['name']);
+                    $this->builderTransaksi->selectMax("id_transaksi");
+                    $id_tangkap = $this->builderTransaksi->countAll();
+                    $id_tangkap++;
+                    $id_transaksi = "TRK" . $id_tangkap;
+                    // dd($id_transaksi);
+
+                    $transaksiModel = new \App\Models\TransaksiModel();
+                    $transaksi = new \App\Entities\Transaksi();
+                    $jumlah_pembelian = $items['qty'];
+                    // dd($items['qty']);
+                    $total = $this->request->getPost('total_harga');
+                    // dd($total);
+                    // $alamat = $this->request->getPost('alamat');
+                    
+                    $barangModel = new \App\Models\BarangModel();
+                    $id_barang = $items['id'];
+                    // dd($items['id']);
+                    $barang = $barangModel->find($id_barang);
+                    
+                    $entBarang = new \App\Entities\Barang();
+                    $entBarang->id_barang = $id_barang;
+                    $entBarang->stok = $barang->stok-$jumlah_pembelian;
+                    $barangModel->save($entBarang);
+
+                    $transaksi->fill($data);
+                    $transaksi->total_harga = $items['price'];
+                    $transaksi->id_barang = $id_barang;
+                    $transaksi->jumlah = $jumlah_pembelian;
+                    $transaksi->id_transaksi = $id_transaksi;
+                    $transaksi->status = "BELUM BAYAR";
+                    // $transaksi->alamat = $alamat;
+                    // $transaksi->created_by = $this->session->get('id');
+                    $transaksi->created_date = date("Y-m-d H:i:s");
+                    
+                    // dd($transaksi);
+                    $transaksiModel->save($transaksi);
+                }
+                else{
+                    session()->setFlashdata('errors', 'Form tidak boleh kosong');
+                    return redirect()->to(site_url('shop/checkout'));
+                }              
+            }
+            // $cart->destroy();
+            return view('transaksi/bayar_checkout',[
+                'validation' => \Config\Services::validation(),
+                'total' => $total,
+                'cart' => $cart,
+            ]);
+        }
+
+        $model = $cart->contents();
+
+        return view('product/checkout',[
+            'cart' => $cart,
+            'provinsi' => json_decode($provinsi)->rajaongkir->results,
+            'model' => $model,
+        ]);
+    }
+
     public function buy(){
         $id = $this->request->uri->getSegment(3);
+        // dd($id);
 
         $modelBarang = new \App\Models\BarangModel();
         $model = $modelBarang->find($id);
+
+        // if($model->stok == 0){
+        //     // dd($model->stok);
+        //     session()->setFlashdata('kosong','Barang sedang kosong');
+        //     return redirect()->to(site_url('shop'));
+        // }
 
         // $modelKomentar = new \App\Models\KomentarModel();
         // $komentar = $modelKomentar->where('id_barang',$id)->findAll();
@@ -103,6 +196,7 @@ class Product extends BaseController
             $data = $this->request->getPost();
             $this->validation->run($data,'transaksi');
             $errors = $this->validation->getErrors();
+            // dd($errors);
             
             if(!$errors){
                 $this->builderTransaksi->selectMax("id_transaksi");
@@ -115,11 +209,11 @@ class Product extends BaseController
                 $transaksi = new \App\Entities\Transaksi();
                 $jumlah_pembelian = $this->request->getPost('jumlah');
                 // $alamat = $this->request->getPost('alamat');
-
+                
                 $barangModel = new \App\Models\BarangModel();
                 $id_barang = $this->request->getPost('id_barang');
                 $barang = $barangModel->find($id_barang);
-
+                
                 $entBarang = new \App\Entities\Barang();
                 $entBarang->id_barang = $id_barang;
                 $entBarang->stok = $barang->stok-$jumlah_pembelian;
@@ -139,6 +233,13 @@ class Product extends BaseController
 
                 $segment = ['shop','transaksi',$id_transaksi];
 
+                return redirect()->to(site_url($segment));
+            }
+            else{
+                $id_barang = $this->request->getPost('id_barang');
+                session()->setFlashdata('errors', 'Form tidak boleh kosong');
+                $segment = ['shop','beli',$id_barang];
+                // dd($id_barang);
                 return redirect()->to(site_url($segment));
             }
         }

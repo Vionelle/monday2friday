@@ -12,7 +12,7 @@
         </div>
         <div class="col-9">
             <h1 class="text-success"><?= $barang->nama?></h1>
-            <h4>ID: <?= $barang->id ?></h4>
+            <h4>ID: <?= $barang->id_barang ?></h4>
             <h4>Harga: <?= "Rp. ".number_format($barang->harga,2,',','.') ?></h4>
             <h4>Size: <?= $barang->size ?></h4>
             <h4>Stok: <?= $barang->stok ?></h4>

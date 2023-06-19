@@ -28,6 +28,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="kontak" class="col-sm-2 col-form-label">Kontak</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control <?= ($validation->hasError('kontak')) ? 'is-invalid' : ''; ?>" id="kontak" name="kontak" autofocus value="<?= (old('kontak')) ? old('kontak') : $user->kontak ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('kontak'); ?>
+                        </div>
+                    </div>
+                </div>
                 <!-- <div class="form-group row">
                     <label for="no_hp" class="col-sm-2 col-form-label">Nomor HP</label>
                     <div class="col-sm-10">

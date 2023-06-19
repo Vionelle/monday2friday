@@ -78,9 +78,9 @@ defined('EXIT_DATABASE')       || define('EXIT_DATABASE', 8);       // database 
 defined('EXIT__AUTO_MIN')      || define('EXIT__AUTO_MIN', 9);      // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest automatically-assigned error code
 
-defined('EMAIL_PENGIRIM') || define('EMAIL_PENGIRIM','jackquiledarrent@gmail.com');
-defined('EMAIL_NAMA') || define('EMAIL_NAMA','Monday to Friday Store');
-defined('EMAIL_PASSWORD') || define('EMAIL_PASSWORD','znxgltdryjlmimgi');
+defined('EMAIL_PENGIRIM') || define('EMAIL_PENGIRIM','mondaytofriday456@gmail.com');
+defined('EMAIL_NAMA') || define('EMAIL_NAMA','Monday to Friday');
+defined('EMAIL_PASSWORD') || define('EMAIL_PASSWORD','ssbxrjmqxsaqubmc');
 
 /**
  * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_LOW instead.

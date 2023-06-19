@@ -1,59 +1,50 @@
 <?= $this->extend('layout_new') ?>
 <?= $this->section('content') ?>
-    <?php
-        $id_barang = [
-            'name' => 'id_barang',
-            'id' => 'id_barang',
-            'value' => $model->id_barang,
-            'type' =>  'hidden'
-        ];
-        $id_pembeli= [
-            'name' => 'id_pembeli',
-            'id' => 'id_pembeli',
-            'value' => session()->get('id'),
-            'type' =>  'hidden'
-        ];
-        $jumlah = [
-            'name' => 'jumlah',
-            'id' => 'jumlah',
-            'value' => 1,
-            'min' => 1,
-            'class' => 'form-control',
-            'type' => 'number',
-            'max' => $model->stok
-        ];
-        $total_harga = [
-            'name' => 'total_harga',
-            'id' => 'total_harga',
-            'value' => null,
-            'class' => 'form-control',
-            'readonly' => true
-        ];
-        $ongkir = [
-            'name' => 'ongkir',
-            'id' => 'ongkir',
-            'value' => null,
-            'class' => 'form-control',
-            'readonly' => true
-        ];
-        $alamat = [
-            'name' => 'alamat',
-            'id' => 'alamat',
-            'value' => null,
-            'class' => 'form-control',
-        ];
-        $submit = [
-            'name' => 'submit',
-            'id' => 'submit',
-            'value' => 'Beli',
-            'class' => 'btn btn-dark mb-3',
-            'type' => 'submit'
-        ];
+<?php
+    $id_pembeli = [
+        'name' => 'id_pembeli',
+        'id' => 'id_pembeli',
+        'value' => session()->get('id'),
+        'type' =>  'hidden'
+    ];
+    $subtotal = [
+        'name' => 'subtotal',
+        'id' => 'subtotal',
+        'value' => $cart->total(),
+        'class' => 'form-control',
+        'readonly' => true,
+    ];
+    $ongkir = [
+        'name' => 'ongkir',
+        'id' => 'ongkir',
+        'value' => null,
+        'class' => 'form-control',
+        'readonly' => true
+    ];
+    $total_harga = [
+        'name' => 'total_harga',
+        'id' => 'total_harga',
+        'value' => null,
+        'class' => 'form-control',
+        'readonly' => true
+    ];
+    $alamat = [
+        'name' => 'alamat',
+        'id' => 'alamat',
+        'value' => null,
+        'class' => 'form-control',
+    ];
+    $submit = [
+        'name' => 'submit',
+        'id' => 'submit',
+        'value' => 'Beli',
+        'class' => 'btn btn-dark mb-3',
+        'type' => 'submit'
+    ];
 
-        $session = session();
-        $errors = $session->getFlashdata('errors');
-    ?>
-
+    $session = session();
+    $errors = $session->getFlashdata('errors');
+?>
     <div class="container">
     <?php if($errors != null) : ?>
         <div class="alert alert-warning" role="alert">
@@ -61,16 +52,17 @@
         </div>
     <?php endif ?>
         <div class="row">
-            <div class="col-6">
-                <div class="card">
+            <div class="col-6">  
+                <div class="card mb-2">
+                    <?php foreach ($model as $key => $value): ?>
                     <div class="card-body">
-                        <img class="img-fluid" style="max-height:200px"
-                        src="<?= base_url('uploads/'.$model->gambar) ?>"/>
-                        <h3 class="text-success"><?= $model->nama ?></h3>
-                        <h4><?= "Rp. ".number_format($model->harga,2,',','.') ?></h4>
-                        <!-- <h4> Stok: <?= $model->stok ?></h4> -->
+                        <img class="img-fluid" style="max-height:100px"
+                        src="<?= base_url('uploads/'.$value['options']['gambar']) ?>"/>
+                        <h4 class="text-success"><?= $value['name']." (".$value['qty'].")" ?></h3>
+                        <h5><?= "Rp. ".number_format($value['price'],2,',','.') ?></h4>
                     </div>
-                </div>
+                    <?php endforeach ?>
+                </div>                
             </div>
             <div class="col-6">
                 <h4 class="mb-3">Pengiriman</h4>
@@ -100,12 +92,11 @@
                 <strong>Estimasi : <span id="estimasi"></span></strong>
                 <hr>
 
-                <?= form_open('shop/beli') ?>
-                    <?= form_input($id_barang) ?>
+                <?= form_open('shop/checkout') ?>
                     <?= form_input($id_pembeli) ?>
                     <div class="form-group">
-                        <?= form_label('Jumlah Pembelian', 'jumlah') ?>
-                        <?= form_input($jumlah) ?>
+                        <?= form_label('Subtotal', 'subtotal') ?>
+                        <?= form_input($subtotal) ?>
                     </div>
                     <div class="form-group">
                         <?= form_label('Ongkir', 'ongkir') ?>
@@ -122,17 +113,17 @@
                     <div class="text-right">
                         <?= form_submit($submit) ?>
                     </div>
-                <?= form_close() ?>
+                <? form_close() ?>
             </div>
         </div>
-    </div>
+    </div>            
 
 <?= $this->endSection() ?>
 <?= $this->section('script') ?>
     <script>
         $('document').ready(function(){
             var jumlah_pembelian = 1;
-            var harga = <?= $model->harga ?>;
+            var harga = <?= $cart->total() ?>;
             var ongkir = 0;
             
             $("#provinsi").on('change',function(){
@@ -192,13 +183,13 @@
                 ongkir = parseInt($(this).val());
                 $("#ongkir").val(ongkir);
                 $("#estimasi").html(estimasi+" Hari");
-                var total_harga = (jumlah_pembelian*harga)+ongkir;
+                var total_harga = harga+ongkir;
                 $("#total_harga").val(total_harga);
             });
 
             $("#jumlah").on('change',function(){
                 jumlah_pembelian = $("#jumlah").val();
-                var total_harga = total_harga = (jumlah_pembelian*harga)+ongkir;
+                var total_harga  = harga+ongkir;
                 $("#total_harga").val(total_harga);
             });
         });

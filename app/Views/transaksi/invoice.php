@@ -22,7 +22,7 @@
         </div> -->
         <div style="font-size:48px; color:'#dddddd' "><i>Invoice</i></div>
         <p>
-            <i>Monday to Friday Store<i><br>
+            <i>Monday to Friday<i><br>
             Jakarta, Indonesia<br>
             Jl. Lobak III, Pulo, Kebayoran Baru<br>
             081770785745
@@ -30,6 +30,7 @@
         <p>
             Pembeli: <?= $pembeli->username ?><br>
             Alamat: <?= $transaksi->alamat ?><br>
+            No. HP: <?= $pembeli->kontak ?><br>
             No. Transaksi: <?= $transaksi->id_transaksi ?><br>
             Tanggal: <?= date('Y-m-d', strtotime($transaksi->created_date)) ?>
         </p>

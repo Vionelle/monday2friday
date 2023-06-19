@@ -18,7 +18,7 @@
                             </li>
                             <li class="list-group-item"><?= $user->email ?></li>
                             <li class="list-group-item"><?= $user->kontak ?></li>
-                            <li class="list-group-item"><a href="<?= site_url('user/edit')?>">Edit</a></li>
+                            <li class="list-group-item"><a class="btn btn-primary" href="<?= site_url('profil/edit')?>">Edit</a></li>
                         </ul>
                     </div>
                 </div>

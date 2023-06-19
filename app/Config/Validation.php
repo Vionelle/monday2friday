@@ -127,7 +127,7 @@ class Validation extends BaseConfig
             'rules' => 'required',
         ],
         'gambar' => [
-            'rules' => 'uploaded[gambar]',
+            'rules' => 'uploaded[gambar]|is_image[gambar]|mime_in[gambar,image/jpg,image/jpeg,image/png]',
         ]
     ];
 
@@ -148,6 +148,8 @@ class Validation extends BaseConfig
         ],
         'gambar' => [
             'uploaded' => 'Gambar Harus Diupload',
+            'is_image' => 'File yang anda pilih bukan gambar',
+            'mime_in' => 'File yang anda pilih bukan gambar'
         ]
     ];
 
@@ -185,6 +187,21 @@ class Validation extends BaseConfig
             'rules' => 'required'
         ],
         'jumlah' => [
+            'rules' => 'required'
+        ],
+        'total_harga' => [
+            'rules' => 'required'
+        ],
+        'alamat' => [
+            'rules' => 'required'
+        ],
+        'ongkir' => [
+            'rules' => 'required'
+        ]
+    ];
+
+    public $checkout = [
+        'id_pembeli' => [
             'rules' => 'required'
         ],
         'total_harga' => [

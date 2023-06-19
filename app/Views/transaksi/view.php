@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="link-order">
-        <a href="<?= site_url('transaksi/bayar/' . $transaksi->id_transaksi); ?>" class="btn btn-success">Bayar</a>
+        <a href="<?= site_url('transaksi/bayar/' . $transaksi->id_transaksi); ?>" class="btn btn-success mb-3">Bayar</a>
     </div>
 </div>
 <?= $this->endSection()?>

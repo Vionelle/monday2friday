@@ -19,6 +19,8 @@ class Transaksi extends BaseController
         $this->userModel = new \App\Models\UserModel();
         $this->barangModel = new \App\Models\BarangModel();
         $this->email = \Config\Services::email();
+        $this->db      = \Config\Database::connect();
+        $this->builderTransaksi = $this->db->table('transaksi');
     }
 
     public function viewTransaksi(){
@@ -73,19 +75,36 @@ class Transaksi extends BaseController
         }
 
         // Get data 
-        $transaksi = new TransaksiModel();
+        $transaksi = new \App\Models\TransaksiModel();;
 
         if ($dari == '' || $ke == '') {
             $paginateData = $transaksi->join('barang', 'barang.id_barang = transaksi.id_barang')
                 ->join('user', 'user.id = transaksi.id_pembeli')
                 ->paginate(10);
+                // dd("salah");
         } else {
-            $paginateData = $transaksi->select('*')
-                ->join('barang', 'barang.id_barang = transaksi.id_barang')
-                ->join('user', 'user.id = transaksi.id_pembeli')
+            $paginateData = $transaksi
+                ->join('user', 'user.id=transaksi.id_pembeli')
+                ->join('barang', 'barang.id_barang=transaksi.id_barang')
                 ->where('transaksi.created_date >=', $dari)
                 ->where('transaksi.created_date <=', $ke)
-                ->paginate(10);
+                ->findAll();
+
+                //hapus
+                // $transaksiModel = new \App\Models\TransaksiModel();
+                // $model = $transaksiModel
+                //     ->join('user', 'user.id=transaksi.id_pembeli')
+                //     ->join('barang', 'barang.id_barang=transaksi.id_barang')
+                //     ->where('transaksi.created_date >=', $dari)
+                //     ->where('transaksi.created_date <=', $ke)
+                //     ->findAll();
+
+                // $cobaTransaksi = $transaksiModel->where('transaksi.created_date >=', $dari)->findAll();
+
+                    // dd($cobaTransaksi);
+                    // dd($paginateData);
+                // dd($transaksi->join('barang', 'barang.id_barang = transaksi.id_barang')
+                // ->join('user', 'user.id = transaksi.id_pembeli')->where('transaksi.id_transaksi', 'TRK1'));
         }
         // dd($model);
 
@@ -99,10 +118,10 @@ class Transaksi extends BaseController
         ];
 
         // $transaksiModel = new \App\Models\TransaksiModel();
-        $model = $this->transaksiModel->findAll();
+        // $model = $this->transaksiModel->findAll();
 
         echo view('admin/template_header',$data);
-        echo view('admin/laporan_transaksi',['model' => $model]);
+        echo view('admin/laporan_transaksi');
         echo view('admin/template_footer',$data);
     }
 
@@ -142,22 +161,23 @@ class Transaksi extends BaseController
         
         $pdf->writeHTML($html, true, false, true, false, '');
 
-        //$this->response->setContentType('application/pdf');
+        $this->response->setContentType('application/pdf');
         $email_pembeli = $pembeli->email;
 
-        $pdf->Output('C:/xampp/htdocs/monday2friday/uploads/invoice.pdf', 'F');
-        $attachment = base_url('uploads/invoice.pdf');
-        $message = "<h1>Invoice Pembelian</h1><p>Kepada ".$pembeli->username.
-        " berikut Invoice atas pembelian Anda</p><br><h4><strong>TERIMA KASIH</strong></h4>";
+        $pdf->Output('C:/xampp/htdocs/monday2friday/uploads/invoice.pdf', 'I');
+        exit;
+        // $attachment = base_url('uploads/invoice.pdf');
+        // $message = "<h1>Invoice Pembelian</h1><p>Kepada ".$pembeli->username.
+        // " berikut Invoice atas pembelian Anda</p><br><h4><strong>TERIMA KASIH</strong></h4>";
 
-        $this->sendEmail($attachment, $email_pembeli, 'Invoice', $message);
+        // $this->sendEmail($attachment, $email_pembeli, 'Invoice', $message);
 
-        $this->session->setFlashdata('success',['Invoice Berhasil Dikirim']);
-        return redirect()->to(site_url('admin/daftartransaksi'));
+        // $this->session->setFlashdata('success',['Invoice Berhasil Dikirim']);
+        // return redirect()->to(site_url('admin/daftartransaksi'));
     }
 
     private function sendEmail($attachment, $to, $title, $message){
-        $this->email->setFrom(EMAIL_PENGIRIM,EMAIL_NAMA);
+        $this->email->setFrom('jackquiledarrent@gmail.com', 'Monday to Friday');
         $this->email->setTo($to);
         $this->email->attach($attachment);
         $this->email->setSubject($title);
@@ -170,8 +190,7 @@ class Transaksi extends BaseController
         }
     }
 
-    public function bayar()
-    {
+    public function bayar(){
         // if (!$this->session->has('isLogin')) {
         //     return redirect()->to('/login');
         // }
@@ -200,15 +219,61 @@ class Transaksi extends BaseController
         return view('transaksi/bayar', $data);
     }
 
-    public function submitBayar()
-    {
+    public function submitCheckout(){
+        // if($this->request->getPost()){
+        //     echo $this->request->getPost('atas_nama');
+        // }
+        
+        $transaksiModel = new \App\Models\TransaksiModel();
+        $cart = \Config\Services::cart();
+        $fileBuktiBayar = $this->request->getFile('bukti_bayar');
+        // dd($fileBuktiBayar);
+        if ($fileBuktiBayar->getError() == 4) {
+            $namaGambar = 'default.png';
+        } else {
+            //Generate nama gambar random
+            $namaGambar = $fileBuktiBayar->getRandomName();
+            //pindahkan file ke folder img
+            $fileBuktiBayar->move('img', $namaGambar);
+        }
+
+        // dd($namaGambar);
+        
+        $len = count($cart->contents());
+        // dd($len);
+        $this->builderTransaksi->selectMax("id_transaksi");
+        $id_tangkap = $this->builderTransaksi->countAll();
+        // dd($id_tangkap);
+
+        for($i = $len; $i > 0; $i--){
+            for($i = $id_tangkap; $i > 0; $i--){
+                // $this->builderTransaksi->selectMax("id_transaksi");
+                // $id_tangkap = $this->builderTransaksi->countAll();
+                $id_transaksi = "TRK" . $i;
+                // $id_tangkap--;
+
+                $transaksiModel->save([
+                    'id_transaksi' => $id_transaksi,
+                    'bukti_bayar' => $namaGambar,
+                    'metode_pembayaran' => $this->request->getVar('nama_bank'),
+                    'atas_nama' => $this->request->getVar('atas_nama'),
+                    'status' => 'MENUNGGU KONFIRMASI PEMBAYARAN'
+                ]);
+            }
+        }
+        
+        $cart->destroy();
+        session()->setFlashdata('pesan', 'Kamu berhasil membayar, silahkan tunggu konfirmasi dari kami');
+
+        return redirect()->to('transaksi/user');
+    }
+
+    public function submitBayar(){
         $id_transaksi = $this->request->uri->getSegment(3);
         // if (!$this->session->has('isLogin')) {
         //     return redirect()->to('/login');
         // }
 
-        
-        
         $transaksiModel = new \App\Models\TransaksiModel();
 
         if (!$this->validate([
@@ -233,10 +298,11 @@ class Transaksi extends BaseController
                 ]
             ]
         ])) {
-            return redirect()->to('/transaksi/bayar/' . $id_transaksi)->withInput();
+            return redirect()->to('transaksi/bayar/' . $id_transaksi)->withInput();
         }
 
         $fileBuktiBayar = $this->request->getFile('bukti_bayar');
+        // dd($fileBuktiBayar);
         //Cek apakah tidak ada gambar yang diupload
         if ($fileBuktiBayar->getError() == 4) {
             $namaGambar = 'default.png';
@@ -253,16 +319,16 @@ class Transaksi extends BaseController
             'id_transaksi' => $id_transaksi,
             'bukti_bayar' => $namaGambar,
             'metode_pembayaran' => $this->request->getVar('nama_bank'),
-            // 'atas_nama' => $this->request->getVar('atas_nama'),
+            'atas_nama' => $this->request->getVar('atas_nama'),
             'status' => 'MENUNGGU KONFIRMASI PEMBAYARAN'
         ]);
 
         session()->setFlashdata('pesan', 'Kamu berhasil membayar, silahkan tunggu konfirmasi dari kami');
 
-        return redirect()->to('/transaksi/user');
+        return redirect()->to('transaksi/user');
     }
-    public function cekPembayaran()
-    {
+
+    public function cekPembayaran(){
         $id_transaksi = $this->request->uri->getSegment(3);
         $transaksiModel = new \App\Models\TransaksiModel();
 
@@ -286,8 +352,7 @@ class Transaksi extends BaseController
         echo view('admin/template_footer',$data);
     }
 
-    public function prosesProduk()
-    {
+    public function prosesProduk(){
         $id_transaksi = $this->request->uri->getSegment(3);
         $transaksiModel = new \App\Models\TransaksiModel();
         $model = $transaksiModel
@@ -307,7 +372,7 @@ class Transaksi extends BaseController
         if ($_POST['submit'] == 'bukti salah') {
             // dd("bukti salah");
 
-            $this->email->setFrom('jackquiledarrent@gmail.com', 'Monday to Friday');
+            $this->email->setFrom(EMAIL_PENGIRIM, 'Monday to Friday');
 
             //EMAIL INVOICE manual
             $this->email->setTo($model->email);
@@ -315,9 +380,10 @@ class Transaksi extends BaseController
             // $this->email->attach($attachment);
             $this->email->SetSubject('Bukti Pembayaran gagal di verifikasi');
 
-            $this->email->setMessage('Kami mendapati bahwa bukti Pembayaran gagal di verifikasi. silahkan upload bukti pembayaran yang benar'); // Our message above including the link
+            $this->email->setMessage('Kami mendapati bahwa bukti bayar yang anda upload salah. Silahkan upload kembali bukti yang benar. Terima kasih'); // Our message above including the link
 
             if (!$this->email->send()) {
+                // echo $this->email->printDebugger();
                 session()->setFlashdata('gagal', 'Email gagal dikirim, silahkan ulangi aktivitas anda');
                 return redirect()->to('admin/daftartransaksi');
             } else {
@@ -342,7 +408,7 @@ class Transaksi extends BaseController
             // $this->email->attach($attachment);
             $this->email->SetSubject('Bukti Pembayaran berhasil di verifikasi');
 
-            $this->email->setMessage('Yeay! bukti pembayaran anda sudah berhasil di verifikasi, produk anda sedang diproses. Harap menunggu ya!'); // Our message above including the link
+            $this->email->setMessage('Bukti pembayaran anda berhasil kami verifikasi. Produk anda sedang diproses, mohon ditunggu!'); // Our message above including the link
 
             if (!$this->email->send()) {
                 session()->setFlashdata('gagal', 'Email gagal dikirim, silahkan ulangi aktivitas anda');
@@ -357,8 +423,8 @@ class Transaksi extends BaseController
             }
         }
     }
-    public function simpanResi()
-    {
+    
+    public function simpanResi(){
         $id_transaksi = $this->request->uri->getSegment(3);
         $transaksiModel = new \App\Models\TransaksiModel();
 
@@ -380,9 +446,9 @@ class Transaksi extends BaseController
             ->first();
             // dd($model->email);
 
-        $status = 'DIKIRIM';
+        $status = 'BARANG SEDANG DIANTAR';
 
-        $this->email->setFrom('jackquiledarrent@gmail.com', 'Monday to Friday');
+        $this->email->setFrom(EMAIL_PENGIRIM, 'Monday to Friday');
 
         //EMAIL INVOICE manual
         $this->email->setTo($model->email);
@@ -390,7 +456,7 @@ class Transaksi extends BaseController
         // $this->email->attach($attachment);
         $this->email->SetSubject('Produk anda sedang dikirim!');
 
-        $this->email->setMessage('Produk anda sedang dikirim menggunakan kurir yang anda pesan. Anda dapat melacak pesanan dengan klik link berikut ini http://localhost:8080/transaksi/user dan klik tombol lacak pesanan');
+        $this->email->setMessage('Produk anda sedang dikirim menggunakan kurir yang anda pesan. Anda dapat melacak pesanan dengan mengakses link berikut ini http://localhost/monday2friday/transaksi/user dan klik tombol lacak pesanan');
 
         if (!$this->email->send()) {
             // dd('gagal');
@@ -408,6 +474,19 @@ class Transaksi extends BaseController
         }
     }
 
+    public function selesai(){
+        $id_transaksi = $this->request->uri->getSegment(3);
+        $transaksiModel = new \App\Models\TransaksiModel();
+
+        $transaksiModel->save([
+            'id_transaksi' => $id_transaksi,
+            'status' => 'SUDAH SAMPAI',
+        ]);
+
+        $this->session->setFlashdata('success','Terima kasih sudah membeli produk kami!');
+        return redirect()->to('transaksi/user');
+    }
+
     public function batal(){
         $id_transaksi = $this->request->uri->getSegment(3);
         $transaksiModel = new \App\Models\TransaksiModel();
@@ -416,8 +495,10 @@ class Transaksi extends BaseController
             'status' => 'BATAL'
         ]);
 
-        return redirect()->to('/transaksi/user');
+        $this->session->setFlashdata('batal','Pesanan anda dibatalkan');
+        return redirect()->to('transaksi/user');
     }
+
     public function batalAdmin(){
         $id_transaksi = $this->request->uri->getSegment(3);
         $transaksiModel = new \App\Models\TransaksiModel();
@@ -430,8 +511,7 @@ class Transaksi extends BaseController
     }
 
     //LIST TRANSAKSI USER
-    public function user()
-    {
+    public function user(){
         // if (!$this->session->has('isLogin')) {
         //     return redirect()->to('/login');
         // }
@@ -444,7 +524,7 @@ class Transaksi extends BaseController
             ->join('user', 'user.id=transaksi.id_pembeli')
             ->join('barang', 'barang.id_barang=transaksi.id_barang')
             ->where('transaksi.id_pembeli', $id_pembeli)
-            ->where('transaksi.status!=', 'Produk sampai di tujuan')
+            ->where('transaksi.status!=', 'SUDAH SAMPAI')
             ->where('transaksi.status!=', 'BATAL')
             ->paginate(10);
         
@@ -462,21 +542,20 @@ class Transaksi extends BaseController
     }
 
     //LACAK RESI
-    public function lacakResi()
-    {
-        $id = $this->request->uri->getSegment(2);
+    public function lacakResi(){
+        $id = $this->request->uri->getSegment(3);
         $transaksiModel = new \App\Models\TransaksiModel();
         
         $transaksi = $this->transaksiModel->getTransaction($id);
         // dd($transaksi);
 
         $data = [
-            'judul' => 'Lacak Resi | Bunch of Gifts',
             'transaksi' => $transaksi,
             'cart' => $cart = \Config\Services::cart(),
             // 'statusNav' => 'order'
         ];
         return view('transaksi/lacakResi', $data);
     }
+
 }
 ?>

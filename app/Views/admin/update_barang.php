@@ -55,7 +55,7 @@
     <h6 class="mt-3">Update Barang</h6>
 </div>
 <div class="card-body">
-    <?= form_open_multipart('admin/updatebarang/'.$barang->id)?>
+    <?= form_open_multipart('admin/updatebarang/'.$barang->id_barang)?>
         <div class="form-group mb-3">
             <?= form_label("Nama","nama")?>
             <?= form_input($nama)?> 

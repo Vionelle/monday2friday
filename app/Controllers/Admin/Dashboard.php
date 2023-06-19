@@ -47,7 +47,7 @@ class Dashboard extends BaseController
             // dd($errors);
 
             if($errors){
-                dd('gagal');
+                // dd('gagal');
                 session()->setFlashdata('errors', $errors);
                 return redirect()->to('admin/v_tambahbarang');                
             }
@@ -55,7 +55,7 @@ class Dashboard extends BaseController
             if(!$errors){
                 // dd('berhasil');
                 $this->barang->fill($data);
-                $this->barang->id = $id_barang;
+                $this->barang->id_barang = $id_barang;
                 $this->barang->gambar = $gambar;
                 // $this->barang->created_by = $this->session->get('id');
                 $this->barang->created_date = date("Y-m-d H:i:s");
@@ -213,7 +213,7 @@ class Dashboard extends BaseController
             $errors = $this->validation->getErrors();
 
             if(!$errors){
-                $this->barang->id = $id;
+                $this->barang->id_barang = $id;
                 $this->barang->fill($data);
 
                 if($this->request->getFile('gambar')->isValid()){

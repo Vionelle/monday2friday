@@ -145,6 +145,7 @@ class Admin extends BaseController
                 $message .= "Silahkan klik link berikut ini $link";
 
                 $this->sendEmailReset($attachment,$to,$title,$message);
+                // dd($this->email->printDebugger());
 
                 $dataUpdate = [
                     'token' => $token
@@ -205,15 +206,17 @@ class Admin extends BaseController
     }
 
     public function sendEmailReset($attachment,$to,$title,$message){
-        $this->email->setFrom(EMAIL_PENGIRIM,EMAIL_NAMA);
+        $this->email->setFrom(EMAIL_PENGIRIM, 'Monday to Friday');
         $this->email->setTo($to);
         $this->email->attach($attachment);
         $this->email->setSubject($title);
         $this->email->setMessage($message);
 
         if(!$this->email->send()){
+            // echo $this->email->printDebugger();
             return false;
         }else{
+            // echo $this->email->printDebugger();
             return true;
         }
     }

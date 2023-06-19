@@ -68,12 +68,12 @@ class User extends BaseController
                     'required' => '{field} product harus diisi,',
                 ]
             ],
-            // 'no_hp' => [
-            //     'rules' => 'required',
-            //     'errors' => [
-            //         'required' => '{field} product harus diisi,',
-            //     ]
-            // ]
+            'kontak' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} product harus diisi,',
+                ]
+            ]
         ])) {
             return redirect()->to('/user/edit/' . $this->request->getVar('id'))->withInput();
             // return redirect()->to('/user/edit/' . $this->session->get('id'))->withInput();

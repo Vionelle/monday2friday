@@ -6,8 +6,7 @@
                         <div class="footer__logo">
                             <a href="<?= site_url('home')?>"><img src="<?= base_url('mtf/logomondayp.png')?>" alt=""></a>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
+                        <p>Monday to Friday adalah UMKM yang mendesain pakaian wanita modis, kami selalu menyediakan pakaian-pakaian dengan desain terbaik. Mulai dari, dress, blouse, skirt, kemeja dan masih banyak lagi</p>
                         <!-- <a href="#"><img src="img/payment.png" alt=""></a> -->
                     </div>
                 </div>
@@ -15,16 +14,16 @@
                     <div class="footer__widget">
                         <h6>Shopping</h6>
                         <ul>
-                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="<?= site_url('shop')?>">Clothing Store</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6">
                     <div class="footer__widget">
-                        <h6>About Us</h6>
+                        <h6>Hubungi Kami</h6>
                         <ul>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="<?= site_url('about/index')?>">About</a></li>
+                            <li><a href="https://wa.me/+6281770785745">Kontak</a></li>
+                            <li><a href="<?= site_url('about/index')?>">Tentang Kami</a></li>
                         </ul>
                     </div>
                 </div>

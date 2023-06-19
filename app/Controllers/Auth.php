@@ -38,7 +38,7 @@ class Auth extends BaseController
                 $userModel->save($user);
 
                 //EMAIL INVOICE
-                $this->email->setFrom('jackquiledarrent@gmail.com', 'Monday to Friday');
+                $this->email->setFrom(EMAIL_PENGIRIM, 'Monday to Friday');
                 //EMAIL INVOICE manual
                 $this->email->setTo($data['email']);
 
@@ -64,6 +64,7 @@ class Auth extends BaseController
         }
         return view('register');
     }
+    
     public function emailValidation($username)
     {
         //menampilkan halaman register
@@ -272,11 +273,13 @@ class Auth extends BaseController
     }
 
     public function sendEmailReset($attachment,$to,$title,$message){
-        $this->email->setFrom(EMAIL_PENGIRIM,EMAIL_NAMA);
+        $this->email->setFrom(EMAIL_PENGIRIM, 'Monday to Friday');
         $this->email->setTo($to);
         $this->email->attach($attachment);
         $this->email->setSubject($title);
         $this->email->setMessage($message);
+
+        // $this->email->send();
 
         if(!$this->email->send()){
             return false;

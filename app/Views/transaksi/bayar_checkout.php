@@ -1,36 +1,32 @@
 <?= $this->extend('layout_new')?>
 <?= $this->section('content')?>
+<?php
+    $username = session()->get('username')
+?>
 <div class="container">
     <div class="row">
         <div class="form-bayar mt-4 col-8">
-            <h2 class="my-3">Form Bayar Pesanan</h2>
-            <form action="<?= site_url('transaksi/submitBayar/' . $transaksi->id_transaksi) ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= site_url('transaksi/submitCheckout') ?>" method="post" enctype="multipart/form-data">
                 <!-- crsf agar form hanya dapat diakses di halaman ini -->
                 <?= csrf_field(); ?>
-                <input type="hidden" name="slug" id="" value="<?= $transaksi->id_transaksi; ?>">
-
                 <div class=" form-group row">
                     <label for="username" class="col-sm-2 col-form-label">Pembeli</label>
                     <div class="col-sm-10">
-                        <input readonly type="text" class="form-control" id="username" name="username" value="<?= (old('username')) ? old('username') : $model->username ?>">
+                        <input readonly type="text" class="form-control" id="username" name="username" value="<?= (old('username')) ? old('username') : $username ?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="nama" class="col-sm-2 col-form-label">Produk</label>
                     <div class="col-sm-10">
-                        <input readonly type="text" class="form-control" id="nama" name="nama" value="<?= (old('nama')) ? old('nama') : $model->nama  ?>">
-                    </div>
-                </div>
-                <div class=" form-group row">
-                    <label for="jumlah" class="col-sm-2 col-form-label">Jumlah Pembelian</label>
-                    <div class="col-sm-10">
-                        <input readonly type="number" class="form-control" id="jumlah" name="jumlah" value="<?= (old('jumlah')) ? old('jumlah') : $model->jumlah ?>">
+                        <?php foreach($cart->contents() as $value => $items): ?>
+                        <input readonly type="text" class="form-control" id="nama" name="nama" value="<?= (old('nama')) ? old('nama') : $items['name'] . " (" . $items['qty'] . ") "  ?>">
+                        <?php endforeach ?>
                     </div>
                 </div>
                 <div class=" form-group row">
                     <label for="total_harga" class="col-sm-2 col-form-label">Total Harga</label>
                     <div class="col-sm-10">
-                        <input readonly type="number" class="form-control" id="total_harga" name="total_harga" value="<?= (old('total_harga')) ? old('total_harga') : $model->total_harga ?>">
+                        <input readonly type="number" class="form-control" id="total_harga" name="total_harga" value="<?= (old('total_harga')) ? old('total_harga') : $total ?>">
                     </div>
                 </div>
                 <div class=" form-group row">
@@ -62,7 +58,7 @@
                             <div class="invalid-feedback">
                                 <?= $validation->getError('bukti_bayar'); ?>
                             </div>
-                            <label class="custom-file-label" for="bukti_bayar"><?= $transaksi->bukti_bayar; ?></label>
+                            <label class="custom-file-label" for="bukti_bayar"><?= "" ?></label>
                         </div>
                     </div>
                 </div>

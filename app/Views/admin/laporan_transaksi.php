@@ -21,9 +21,9 @@
 
     <form method='get' action="<?= site_url('admin/laporan') ?>" id="searchForm">
         <div class="form-rapih">
-            <input class="form-control" type='date' name='dari' value='<?= $dari ?>'>
-            <input class="form-control" type='date' name='ke' value='<?= $ke ?>'>
-            <input class="btn btn-success" type='button' id='btnsearch' value='Submit' onclick='document.getElementById("searchForm").submit();'>
+            <input class="form-control mb-3" type='date' name='dari' value='<?= $dari ?>'>
+            <input class="form-control mb-3" type='date' name='ke' value='<?= $ke ?>'>
+            <input class="btn btn-success mb-3" type='button' id='btnsearch' value='Submit' onclick='document.getElementById("searchForm").submit();'>
         </div>
     </form>
 
@@ -37,11 +37,11 @@
                 <td>Alamat</td>
                 <td>Jumlah Pembelian</td>
                 <td>Total Harga</td>
-                <td>Status</td>
+                
             </tr>
         </thead>
         <tbody>
-            <?php foreach($model as $index=>$transaksi): ?>
+            <?php foreach($transaksi as $index=>$transaksi): ?>
                 <tr>
                     <td><?= $transaksi->id_transaksi ?></td>
                     <td><?= $transaksi->id_barang ?></td?>
@@ -49,7 +49,7 @@
                     <td><?= $transaksi->alamat ?></td>
                     <td><?= $transaksi->jumlah ?></td>
                     <td><?= $transaksi->total_harga ?></td>
-                    <td><?= $transaksi->status ?></td>
+                    
             </tr>
             <?php endforeach ?>
         </tbody>

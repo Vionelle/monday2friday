@@ -2,11 +2,11 @@
 <?= $this->section('content') ?>
 <?php 
     $session = session();
-    $kosong = "Keranjang belanja masih kosong"
+    $kosong = "Keranjang belanja kosong"
 ?>
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12" style="margin-bottom: 5rem">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -36,7 +36,7 @@
                                         <td><?= "Rp. ".number_format($value['price'],2,',','.') ?></td>
                                         <td><?= "Rp. ".number_format($value['subtotal'],2,',','.') ?></td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                            <a href="<?= base_url('shop/delete/' . $value['rowid']) ?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                            <?php } ?>  
@@ -52,6 +52,7 @@
             <div class="col-6">
 
             </div>
+            <?php if($cart->totalItems()!=0): ?>
             <div class="col-6">
                 <div class="table-responsive">
                     <table class="table">
@@ -70,10 +71,13 @@
                     </table>
                 </div>
             </div>
+            <?php endif ?>
         </div>
         <div class="row">
             <!-- <button type="submit" class="btn btn-primary mb-3 mr-3">Update</button> -->
-            <button type="submit" class="btn btn-success float-end mb-3" style="float:right">Check Out</button>
+            <?php if($cart->totalItems()!=0): ?>
+            <a href="<?= site_url('shop/checkout')?>" class="btn btn-success float-end mb-3" style="float:right">Check Out</a>
+            <?php endif ?>
         </div>
     </div>
                       
